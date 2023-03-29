@@ -11,8 +11,8 @@ graphs:
             type: integer
           - name: type
             type: string
-          - name: location_FORPOKE
-            type: geocoordinate
+          - name: location
+            type: point
       - label: Trainer
         properties:
           - name: id
