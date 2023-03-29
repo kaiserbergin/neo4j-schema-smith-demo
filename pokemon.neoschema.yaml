@@ -11,6 +11,8 @@ graphs:
             type: integer
           - name: type
             type: string
+          - name: location
+            type: point
       - label: Trainer
         properties:
           - name: id
