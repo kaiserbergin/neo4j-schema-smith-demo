@@ -20,9 +20,16 @@ jobs:
       run: schemasmith lint -f pokemon.neoschema.yaml
     - name: Generate Cyhper
       run: schemasmith script -o ./publish/cypher-script.cypher -f pokemon.neoschema.yaml
-    - name: Upload Build Artifact
+    - name: Upload Cypher Script
       uses: actions/upload-artifact@v3.1.2
       with:
         name: cypher-script
         path: ./publish
         if-no-files-found: error
+    - name: Download Cypher Script
+      uses: actions/download-artifact@v2.1.1
+      with:
+        name: cypher-script
+        path: run-cypher
+    - name: Run script
+      run: schemasmith run-script -f ${{steps.download.outputs.download-path}}/cypher-script.cypher -s neo4j+s://0404ba3e.databases.neo4j.io -u ${{secrets.NEO4J_USERNAME}} -p ${{secrets.NEO4J_PASSWORD}} 
