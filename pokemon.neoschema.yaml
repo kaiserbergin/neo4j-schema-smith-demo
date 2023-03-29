@@ -39,3 +39,10 @@ graphs:
           id: Pokemon
           properties:
             - type
+      - name: PokemonCoords_PI
+        type: point
+        entity:
+          type: node
+          id: Pokemon
+          properties:
+            - location
