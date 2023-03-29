@@ -1,0 +1,30 @@
+name: Release
+
+on:
+    workflow_call
+#   pull_request:
+#     branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Install SchemaSmith
+      run: dotnet tool install -g schemasmith --prerelease
+    - name: Lint
+      run: schemasmith lint -f pokemon.neoschema.yaml
+    - name: Generate Cyhper
+      run: schemasmith script -o ./publish/cypher-script.cypher -f pokemon.neoschema.yaml
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: cypher-script
+        path: ./publish
+        if-no-files-found: error
