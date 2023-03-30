@@ -38,4 +38,4 @@ jobs:
         name: cypher-script
         path: run-cypher
     - name: Run script
-      run: schemasmith run-script -f ${{steps.download.outputs.download-path}}/cypher-script.cypher -s neo4j+s://0404ba3e.databases.neo4j.io -u ${{secrets.NEO4J_USERNAME}} -p ${{secrets.NEO4J_PASSWORD}} 
+      run: schemasmith run-script -f ${{steps.download.outputs.download-path}}/cypher-script.cypher -s neo4j+s://e49f7752.databases.neo4j.io -u ${{secrets.NEO4J_USERNAME}} -p ${{secrets.NEO4J_PASSWORD}} 
