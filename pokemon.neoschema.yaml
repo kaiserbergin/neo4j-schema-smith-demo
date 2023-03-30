@@ -31,6 +31,13 @@ graphs:
           id: Pokemon
           properties:
             - id
+      - name: TrainerId_UQ
+        type: unique
+        entity:
+          type: node
+          id: Trainer
+          properties:
+            - id
     indexes:
       - name: PokemonType_RI
         type: range
