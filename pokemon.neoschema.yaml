@@ -19,6 +19,8 @@ graphs:
             type: integer
           - name: name
             type: string
+          - name: trainerLevel
+            type: integer
     relationships:
       - type: BELONGS_TO
         connections:
