@@ -8,7 +8,7 @@ on:
       
 
 jobs:
-  build-and-release:
+  build:
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
 
     runs-on: ubuntu-latest
@@ -31,6 +31,35 @@ jobs:
         name: cypher-script
         path: ./publish
         if-no-files-found: error
+  dev-release:
+    runs-on: ubuntu-latest
+    needs: ["build"]
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Install SchemaSmith
+      run: dotnet tool install -g schemasmith --prerelease
+    - name: Download Cypher Script
+      id: download
+      uses: actions/download-artifact@v2.1.1
+      with:
+        name: cypher-script
+        path: run-cypher
+    - name: Run script
+      run: schemasmith run-script -f ${{steps.download.outputs.download-path}}/cypher-script.cypher -s neo4j+s://e49f7752.databases.neo4j.io -u ${{secrets.NEO4J_USERNAME}} -p ${{secrets.NEO4J_PASSWORD}}
+  prod-release:
+    runs-on: ubuntu-latest
+    needs: ["build", "dev-release"]
+    environment: production
+    steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+    - name: Install SchemaSmith
+      run: dotnet tool install -g schemasmith --prerelease
     - name: Download Cypher Script
       id: download
       uses: actions/download-artifact@v2.1.1
